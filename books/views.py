@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout
+from django.core.paginator import Paginator
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Book
@@ -44,7 +45,12 @@ def logout_view(request):
 @login_required
 def book_list(request):
     books = Book.objects.all()
-    return render(request, "book_list.html", {"books": books})
+    paginator = Paginator(books, 5)  # Show 5 books per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'book_list.html', {'page_obj': page_obj})
+    # return render(request, "book_list.html", {"books": books})
 
 # Add Book (Admin Only)
 @user_passes_test(is_admin)

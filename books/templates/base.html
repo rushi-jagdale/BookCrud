@@ -1,47 +1,52 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Book Manager{% endblock %}</title>
+    <title>Book Manager</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        /* Ensure the page takes at least full height */
+        html, body {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .content-wrapper {
+            flex: 1;
+        }
+        /* Footer stays at bottom */
+        footer {
+            background: #343a40;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
 </head>
 <body>
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="{% url 'home' %}">📚 Book Manager</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home' %}">Home</a>
-                    </li>
-                    {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'book_list' %}">Dashboard</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-outline-danger text-white ms-2" href="{% url 'logout' %}">Logout</a>
-                        </li>
-                        <li class="nav-item">
-                            <span class="nav-link text-white">Welcome, {{ user.username }}</span>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-outline-success text-white ms-2" href="{% url 'login' %}">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-outline-warning text-white ms-2" href="{% url 'register' %}">Register</a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
+            <ul class="navbar-nav ms-auto">
+                {% if user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'book_list' %}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link btn btn-danger text-white" href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link btn btn-warning text-white" href="{% url 'register' %}">Register</a></li>
+                {% endif %}
+            </ul>
         </div>
     </nav>
-    <div class="container mt-4">
-        {% block content %}{% endblock %}
+
+    <!-- Content Wrapper -->
+    <div class="container mt-4 content-wrapper">
+        {% block content %} {% endblock %}
     </div>
+
+    <!-- Footer at Bottom -->
+    <footer class="mt-auto">
+        <p>&copy; 2024 Book Manager | Built with ❤️ by You</p>
+    </footer>
 </body>
 </html>
